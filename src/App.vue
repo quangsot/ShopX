@@ -1,9 +1,11 @@
 <script setup lang="ts">
-// import LoginPage from './views/auth/LoginPage.vue';
+import button from "@/components/Button/ButtonCpn.vue";
 </script>
 
 <template>
 	<RouterView></RouterView>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import "@/assets/scss/global.scss";
+</style>

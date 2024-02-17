@@ -62,9 +62,9 @@
 	</div>
 </template>
 <style scoped lang="scss">
-@import "../../assets/scss/global.scss";
+//@import "../../assets/scss/global.scss";
 .body {
-	background-image: linear-gradient(to bottom left, $color-main 50%, #ffffff 50%);
+	background-image: linear-gradient(to bottom left, var(--color-main) 50%, #ffffff 50%);
 	width: 100vw;
 	height: 100vh;
 	display: flex;
@@ -74,7 +74,7 @@
 		width: 500px;
 		height: 600px;
 		// background-color: #ffffff65;
-		background-image: linear-gradient(to top right, $color-main 20%, #ffffff 20%);
+		background-image: linear-gradient(to top right, var(--color-main) 20%, #ffffff 20%);
 		border: none;
 		border-radius: 10px;
 		overflow: hidden;
@@ -98,7 +98,7 @@
 			flex-direction: column;
 			gap: 50px;
 			label {
-				color: $color-text;
+				color: var(--color-text);
 				font-size: 18px;
 				margin-bottom: 8px;
 				cursor: pointer;
@@ -112,7 +112,7 @@
 					width: 100%;
 					height: 100%;
 					border: none;
-					border-bottom: solid 3px $color-grey-400;
+					border-bottom: solid 3px var(--color-grey-400);
 					outline: none;
 					padding-left: 50px;
 					font-size: 16px;
@@ -129,7 +129,7 @@
 				height: 50px;
 				border: none;
 				border-radius: 50px;
-				background-color: $color-main;
+				background-color: var(--color-main);
 				margin: 0 auto;
 				margin-top: 20px;
 				display: flex;
@@ -139,12 +139,12 @@
 				outline: none;
 				cursor: pointer;
 				&:hover {
-					background-color: $color-blue-400;
+					background-color: var(--color-blue-400);
 				}
 				&:active {
 					background-color: #ffffff;
-					color: $color-main;
-					border: solid 1px $color-main;
+					color: var(--color-main);
+					border: solid 1px var(--color-main);
 				}
 			}
 		}
@@ -154,7 +154,7 @@
 			.fogot-password {
 				span {
 					cursor: pointer;
-					color: $color-main;
+					color: var(--color-main);
 					&:hover {
 						text-decoration: underline;
 					}
@@ -207,7 +207,7 @@
 				div {
 					width: fit-content;
 					span {
-						color: $color-main;
+						color: var(--color-main);
 						text-decoration: underline;
 						cursor: pointer;
 					}

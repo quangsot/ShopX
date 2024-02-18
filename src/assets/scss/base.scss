@@ -3,8 +3,14 @@
 *::before,
 *::after {
 	box-sizing: border-box;
-	margin: 0;
 	font-weight: normal;
+	margin: 0;
+	padding: 0;
+	outline: 0;
+	border: 0;
+	appearance: none;
+	text-decoration: none;
+	list-style: none;
 }
 
 body {

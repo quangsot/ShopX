@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-	<div class="body">
+	<div class="body-login">
 		<div class="form-container">
 			<div class="head">
 				<img
@@ -63,7 +63,7 @@
 </template>
 <style scoped lang="scss">
 //@import "../../assets/scss/global.scss";
-.body {
+.body-login {
 	background-image: linear-gradient(to bottom left, var(--color-main) 50%, #ffffff 50%);
 	width: 100vw;
 	height: 100vh;
@@ -117,6 +117,11 @@
 					padding-left: 50px;
 					font-size: 16px;
 					font-weight: 600;
+					&::placeholder {
+						color: var(--color-text-muted);
+						font-size: small;
+						font-weight: 300;
+					}
 				}
 				.icon {
 					position: absolute;

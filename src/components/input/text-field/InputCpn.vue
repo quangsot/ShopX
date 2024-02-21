@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import { useField } from "vee-validate";
 import Icon from "@/components/icon/IconCpn.vue";
 import { STATUS } from "@/helper/enum.js";
+
 const props = defineProps({
 	name: { type: String, default: "" }, // tên input dùng cho vee-validate
 	type: { type: String, default: "text" }, // kiểu input textfield
@@ -15,7 +16,7 @@ const props = defineProps({
 	colorTrailingIcon: { type: String, default: "" },
 	helperText: { type: String, default: "" }, // thông báo bên dưới input
 });
-
+const emit = defineEmits(["update:modelValue"]);
 const statusInput = ref<STATUS>(STATUS.NORMAL);
 
 const { value, errorMessage } = useField(() => props.name);
@@ -35,6 +36,8 @@ watch(errorMessage, (newVal) => {
 		infoText.value = props.helperText;
 	}
 });
+//bind text ra ngoài
+watch(value, (newVal) => emit("update:modelValue", newVal));
 </script>
 <template>
 	<div class="input-container">

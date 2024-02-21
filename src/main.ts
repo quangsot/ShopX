@@ -15,9 +15,15 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 // Thêm các icon vào thư viện
 library.add(fas, far, fab);
 
+// cpn chung
+import InputCpn from "@/components/input/text-field/InputCpn.vue";
+import ButtonCpn from "./components/button/ButtonCpn.vue";
+import IconCpn from "@/components/icon/IconCpn.vue";
+
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-
-app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");
+app.component("font-awesome-icon", FontAwesomeIcon);
+app.component("InputCpn", InputCpn).component("ButtonCpn", ButtonCpn).component("IconCpn", IconCpn);
+app.mount("#app");

@@ -4,7 +4,7 @@
 		<div class="form-container">
 			<div class="head">
 				<img
-					src="../../../public/logo/logo.jpg"
+					src="../../assets/logo/logo.jpg"
 					alt="logo-shop-x"
 				/>
 			</div>

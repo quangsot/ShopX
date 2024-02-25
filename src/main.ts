@@ -20,10 +20,14 @@ import InputCpn from "@/components/input/text-field/InputCpn.vue";
 import ButtonCpn from "./components/button/ButtonCpn.vue";
 import IconCpn from "@/components/icon/IconCpn.vue";
 
+// directive
+import tooltip from "./helper/directives/TooltipDirective.js";
+import clickOutSide from "./helper/directives/OutSideDirective";
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.component("InputCpn", InputCpn).component("ButtonCpn", ButtonCpn).component("IconCpn", IconCpn);
+app.directive("tooltip", tooltip).directive("outside", clickOutSide);
 app.mount("#app");

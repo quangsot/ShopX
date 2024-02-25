@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { computed, ref, watch, type InputHTMLAttributes } from "vue";
 import { useField } from "vee-validate";
 import Icon from "@/components/icon/IconCpn.vue";
 import { STATUS } from "@/helper/enum.js";
 
 const props = defineProps({
+	modelValue: { type: String, default: "" },
 	name: { type: String, default: "" }, // tên input dùng cho vee-validate
 	type: { type: String, default: "text" }, // kiểu input textfield
 	title: { type: String, default: "" }, // tiêu đề input (label)
@@ -16,11 +17,38 @@ const props = defineProps({
 	colorTrailingIcon: { type: String, default: "" },
 	helperText: { type: String, default: "" }, // thông báo bên dưới input
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits([
+	"update:modelValue",
+	"onFocus",
+	"onFocusin",
+	"onFocusout",
+	"onBlur",
+	"pageDown",
+	"pageUp",
+	"enter",
+	"shift-enter",
+	"onInput",
+]);
+
 const statusInput = ref<STATUS>(STATUS.NORMAL);
+var valueInput = ref<unknown>();
+var errorMessage = ref<string | undefined>("");
+({ value: valueInput, errorMessage } = useField(() => {
+	if (props.name) return props.name;
+	else return "";
+}));
+/**
+ * hàm khởi tạo
+ */
+const created = () => {
+	console.log(props.helperText);
 
-const { value, errorMessage } = useField(() => props.name);
-
+	// khi khởi tạo nếu useField không trả về giá trị gì cho valueInput thì gán mặc định là modelValue
+	if (!valueInput.value) valueInput.value = props.modelValue;
+	else {
+	}
+};
+created();
 // biến thông báo
 const infoText = ref<string>(props.helperText);
 
@@ -36,14 +64,25 @@ watch(errorMessage, (newVal) => {
 		infoText.value = props.helperText;
 	}
 });
+//bind vào
+watch(
+	() => props.modelValue,
+	(newVal) => {
+		if (newVal) {
+			valueInput.value = newVal;
+		} else {
+			valueInput.value = "";
+		}
+	}
+);
 //bind text ra ngoài
-watch(value, (newVal) => emit("update:modelValue", newVal));
+watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 </script>
 <template>
 	<div class="input-container">
 		<label
 			v-if="title"
-			for="INPUT_CUSTOM_CPN"
+			:for="`${$.uid}`"
 			>{{ title }}</label
 		>
 		<div class="input">
@@ -63,11 +102,20 @@ watch(value, (newVal) => emit("update:modelValue", newVal));
 					'no-icon': trailingIcon.length <= 0 && leadingIcon.length <= 0,
 					'has-both-icon': trailingIcon.length > 0 && leadingIcon.length > 0,
 				}"
-				id="INPUT_CUSTOM_CPN"
+				:id="`${$.uid}`"
 				:type="type"
 				:placeholder="placeholder"
 				:tabindex="tabindex"
-				v-model="value"
+				v-model="valueInput"
+				@focus="(e: FocusEvent)=>$emit('onFocus',e)"
+				@focusin="(e: FocusEvent)=>$emit('onFocusin',e)"
+				@focusout="(e:FocusEvent)=>$emit('onFocusout',e)"
+				@blur="(e: FocusEvent)=>$emit('onBlur',e)"
+				@keyup.down="(e: KeyboardEvent)=>($emit('pageDown',e))"
+				@keyup.up="(e: KeyboardEvent)=>($emit('pageUp',e))"
+				@keydown.enter="(e: KeyboardEvent)=>($emit('enter',e))"
+				@keydown.enter.shift.exact.prevent="(e: KeyboardEvent)=>($emit('shift-enter',e))"
+				@input="(e: Event)=>($emit('onInput'),e as InputEvent)"
 			/>
 			<div
 				v-if="trailingIcon"

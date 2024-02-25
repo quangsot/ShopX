@@ -47,6 +47,10 @@ import SidebarItemCpn from "@/components/menu/SidebarItemCpn.vue";
 	border-radius: var(--border-radius-1);
 	position: relative;
 	box-shadow: var(--box-shadow);
+	transition: all 0.3s ease;
+	&:hover {
+		box-shadow: none;
+	}
 	.logout {
 		width: 100%;
 		position: absolute;

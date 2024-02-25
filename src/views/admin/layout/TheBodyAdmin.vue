@@ -1,4 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import CheckboxCpn from "@/components/input/CheckboxCpn.vue";
+
+import { ref } from "vue";
+
+const isActiveRow = ref<boolean>(false);
+
+const activeItem = ref<string[]>([]);
+</script>
 <template>
 	<div class="body-admin">
 		<div class="title">
@@ -13,19 +21,24 @@
 			<div class="feature-table">
 				<div class="table-feature">
 					<InputCpn
+						title="Search"
 						class="search-feature"
 						type="text"
 						trailingIcon="fa-solid fa-magnifying-glass"
 						placeholder="nhập tên hoặc SKU"
 					/>
-					<IconCpn
-						class="reload"
-						icon="fa-solid fa-rotate"
-					/>
-					<IconCpn
-						class="export-excel-feature"
-						icon="fa-solid fa-right-to-bracket"
-					/>
+					<div v-tooltip="'Làm mới'">
+						<IconCpn
+							class="reload"
+							icon="fa-solid fa-rotate"
+						/>
+					</div>
+					<div v-tooltip="{ text: 'Xuất Excel', theme: { placement: 'left' } }">
+						<IconCpn
+							class="export-excel-feature"
+							icon="fa-solid fa-right-to-bracket"
+						/>
+					</div>
 				</div>
 			</div>
 			<div class="table-wrapper">
@@ -33,18 +46,62 @@
 					<table class="main-content">
 						<thead>
 							<tr>
+								<th>
+									<CheckboxCpn />
+								</th>
 								<th>STT</th>
 								<th>Tên sản phẩm</th>
 								<th>Hãng</th>
 								<th>Nhà cung cấp</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="num in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+							<tr
+								v-for="num in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+								:key="num"
+								:class="{ 'active-row': activeItem.includes(`${num}`) }"
+							>
+								<!-- :class="{ 'active-row': checkList[num] }" -->
+								<td>
+									<CheckboxCpn
+										:value="`${num}`"
+										@checked="
+											(value) => {
+												if (value[0]) {
+													activeItem.push(value[1]);
+												} else activeItem = activeItem.filter((item) => item != value[1]);
+												console.log('active item>>>', activeItem);
+											}
+										"
+									/>
+								</td>
 								<td>{{ num }}</td>
 								<td>Áo thun {{ num }}</td>
 								<td>Hãng {{ num }}</td>
 								<td>Nhà cung cấp {{ num }}</td>
+								<td class="context-menu">
+									<div class="feature-row">
+										<div
+											class="edit-feature"
+											v-tooltip="'Sửa'"
+										>
+											<IconCpn
+												class="icon-feature-row"
+												icon="fa-regular fa-pen-to-square"
+											/>
+										</div>
+										<div
+											class="delete-feature"
+											v-tooltip="'Xóa'"
+										>
+											<IconCpn
+												class="icon-feature-row"
+												icon="fa-regular fa-trash-can"
+											/>
+										</div>
+									</div>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -76,8 +133,8 @@
 <style scoped lang="scss">
 .body-admin {
 	width: 100%;
-	height: auto;
-	padding: 12px 0;
+	height: calc(100% - 56px);
+	padding-top: 12px;
 	//background-color: inherit;
 	.title {
 		margin-bottom: 24px;
@@ -89,6 +146,9 @@
 		}
 	}
 	.main-container {
+		height: calc(100% - 80px);
+		display: flex;
+		flex-direction: column;
 		.feature-table {
 			margin-bottom: 12px;
 			.table-feature {
@@ -102,17 +162,11 @@
 					height: 20px;
 					cursor: pointer;
 				}
-				.search-feature {
-					box-shadow: var(--box-shadow);
-					transition: all 0.4s ease;
-					&:hover {
-						box-shadow: none;
-					}
-				}
 			}
 		}
 		.table-wrapper {
-			padding-left: 10px;
+			flex-grow: 1;
+			padding: 10px 10px 0;
 			background-color: var(--color-white);
 			box-shadow: var(--box-shadow);
 			border-radius: var(--border-radius-2);
@@ -121,7 +175,7 @@
 				box-shadow: none;
 			}
 			.table-container {
-				height: 450px;
+				height: calc(100% - 60px);
 				overflow: auto;
 				&::-webkit-scrollbar {
 					background-color: transparent;
@@ -136,6 +190,58 @@
 						background-color: var(--color-info-light);
 					}
 				}
+				.main-content {
+					tbody {
+						tr {
+							&:hover {
+								.context-menu {
+									.feature-row {
+										display: flex;
+									}
+								}
+							}
+							.context-menu {
+								position: relative;
+								width: 1px;
+								background-color: transparent;
+								.feature-row {
+									width: 100px;
+									height: 44px;
+									display: none;
+									align-items: center;
+									justify-content: center;
+									gap: 8px;
+									position: absolute;
+									top: 0;
+									left: -100px;
+									background-color: inherit;
+									.icon-feature-row {
+										width: 20px;
+										height: 20px;
+									}
+									.edit-feature,
+									.delete-feature {
+										background-color: var(--color-background);
+										transition: all 0.2s ease;
+										&:hover {
+											background-color: var(--color-white);
+										}
+										&:active {
+											transform: scale(0.9);
+										}
+										width: 40px;
+										height: 40px;
+										border: solid 1px var(--color-info-light);
+										border-radius: 100%;
+										display: flex;
+										align-items: center;
+										justify-content: center;
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 			.table-footer {
 				display: flex;
@@ -143,6 +249,7 @@
 				justify-content: space-between;
 				padding-right: 10px;
 				height: 60px;
+				border-top: solid 1px var(--color-info-light);
 				.total-record {
 					span {
 						font-weight: 700;
@@ -173,8 +280,7 @@
 									width: 20px;
 									height: 20px;
 									&:active {
-										width: 18px;
-										height: 18px;
+										transform: scale(0.8);
 									}
 								}
 								&:hover {
@@ -205,6 +311,9 @@ table {
 				top: 0;
 				left: 0;
 				background-color: var(--color-white);
+				&:first-child {
+					width: 50px !important;
+				}
 			}
 		}
 	}
@@ -216,13 +325,12 @@ table {
 		transition: all 0.3s ease;
 		&:hover {
 			background-color: var(--color-info-light);
-			border-bottom: solid 1px transparent;
+			// border-bottom: solid 1px transparent;
 		}
 		&:active {
 			background-color: transparent;
 		}
 		td {
-			min-width: 100px;
 			height: 44px;
 			cursor: pointer;
 			text-align: center;
@@ -231,6 +339,7 @@ table {
 			&:first-child {
 				border-top-left-radius: var(--border-radius-1);
 				border-bottom-left-radius: var(--border-radius-1);
+				width: 50px !important;
 			}
 			&:last-child {
 				border-top-right-radius: var(--border-radius-1);
@@ -238,5 +347,8 @@ table {
 			}
 		}
 	}
+}
+.active-row {
+	background-color: var(--color-blue-100) !important;
 }
 </style>

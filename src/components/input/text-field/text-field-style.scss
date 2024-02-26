@@ -34,7 +34,8 @@
 			width: 300px;
 			height: 36px;
 			border-radius: var(--border-radius-1);
-			border: 1px solid var(--color-border-input);
+			// border: 1px solid var(--color-border-input);
+			background-color: var(--color-bg-input);
 			&::placeholder {
 				color: var(--color-grey-400);
 			}
@@ -71,10 +72,40 @@
 	}
 }
 .normal {
-	color: var(--color-warning);
+	.help-text {
+		color: var(--color-text);
+	}
+}
+.success {
+	.input {
+		input {
+			background-color: var(--color-bg-success);
+			&:hover {
+				background-color: var(--color-bg-success);
+			}
+			&:focus {
+				outline: none;
+				border: solid 1px var(--color-success) !important;
+			}
+		}
+	}
 }
 .error {
-	color: var(--color-danger);
+	.input {
+		input {
+			background-color: var(--color-bg-danger);
+			&:hover {
+				background-color: var(--color-bg-danger);
+			}
+			&:focus {
+				outline: none;
+				border: solid 1px var(--color-danger) !important;
+			}
+		}
+	}
+	.help-text {
+		color: var(--color-danger);
+	}
 }
 .has-leading-icon {
 	padding-left: 38px;

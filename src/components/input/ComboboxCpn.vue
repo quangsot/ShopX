@@ -33,10 +33,23 @@ const handleHideListItem = () => {
  * sử lý sự kiện chọn 1 phần tử trên list item bằng enter
  */
 const handleSelectItem = (): void => {
-	if (indexOfLi.value > 0) {
+	// người dùng chọn phần tử bằng phím lên xuống
+	if (indexOfLi.value >= 0) {
 		selectedItem.value[0] = props.values[indexOfLi.value];
 		selectedItem.value[1] = props.displays[indexOfLi.value];
 		valueCombobox.value = tempValueCombobox.value;
+	}
+	// người dùng không chọn bằng phím lên xuống
+	// người dùng nhập trực tiếp
+	else {
+		indexItemSelected.value = getIndexSelected();
+		if (indexItemSelected.value > -1) {
+			selectedItem.value[0] = `${indexItemSelected.value}`;
+			selectedItem.value[1] = valueCombobox.value;
+		} else {
+			selectedItem.value[0] = "";
+			selectedItem.value[1] = "";
+		}
 	}
 };
 /**
@@ -59,6 +72,7 @@ let indexOfLi = ref<number>(-1);
  * @param e sự kiện của bàn phím
  */
 const handlePageDown = (e: KeyboardEvent): void => {
+	if (!isDisplayList.value) isDisplayList.value = true;
 	if (liElements.value && isDisplayList.value == true) {
 		// debugger;
 		if (indexOfLi.value >= liElements.value.length - 1) {
@@ -66,7 +80,7 @@ const handlePageDown = (e: KeyboardEvent): void => {
 		} else {
 			indexOfLi.value++;
 		}
-		liElements.value[indexOfLi.value].focus();
+		// liElements.value[indexOfLi.value].focus();
 		tempValueCombobox.value = listDisplay.value[indexOfLi.value];
 	} else return;
 };
@@ -81,7 +95,7 @@ const handlePageUp = (e: KeyboardEvent): void => {
 		} else {
 			indexOfLi.value--;
 		}
-		liElements.value[indexOfLi.value].focus();
+		// liElements.value[indexOfLi.value].focus();
 		tempValueCombobox.value = listDisplay.value[indexOfLi.value];
 	} else return;
 };
@@ -90,6 +104,7 @@ const handlePageUp = (e: KeyboardEvent): void => {
  * search theo input
  */
 watch(valueCombobox, (newVal) => {
+	// ==========tìm kiếm==========//
 	if (newVal) {
 		let searchList = props.displays.filter((item) => item.includes(newVal));
 		if (searchList) listDisplay.value = searchList;
@@ -115,7 +130,6 @@ const getIndexSelected = (): number => {
 			:name="name"
 			type="text"
 			:title="title"
-			:helper-text="helperText"
 			:placeholder="placeholder"
 			:tabindex="tabindex"
 			:leading-icon="leadingIcon"
@@ -129,8 +143,7 @@ const getIndexSelected = (): number => {
 			"
 			@on-blur="
 				($event) => {
-					console.log('blur input');
-					if ($event.relatedTarget?.tagName?.toLowerCase() !== 'li') handleHideListItem();
+					if ($event.relatedTarget?.stagName?.toLowerCase() !== 'li') handleHideListItem();
 				}
 			"
 			@page-down="handlePageDown"
@@ -138,9 +151,8 @@ const getIndexSelected = (): number => {
 			@enter="
 				() => {
 					handleSelectItem();
-					// tìm index của item trong props.display -> gán cho index item selected
-					indexItemSelected = getIndexSelected();
 					handleHideListItem();
+					// validateValueCombobox();
 				}
 			"
 			@shift-enter="if (!isDisplayList) isDisplayList = true;"

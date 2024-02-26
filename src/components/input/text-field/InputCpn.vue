@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, type InputHTMLAttributes } from "vue";
+import { computed, ref, watch, toRef } from "vue";
 import { useField } from "vee-validate";
 import Icon from "@/components/icon/IconCpn.vue";
 import { STATUS } from "@/helper/enum.js";
@@ -29,34 +29,32 @@ const emit = defineEmits([
 	"shift-enter",
 	"onInput",
 ]);
-
+const name = toRef(props, "name");
 const statusInput = ref<STATUS>(STATUS.NORMAL);
-var valueInput = ref<unknown>();
-var errorMessage = ref<string | undefined>("");
-({ value: valueInput, errorMessage } = useField(() => {
-	if (props.name) return props.name;
-	else return "";
-}));
-/**
- * hàm khởi tạo
- */
-const created = () => {
-	console.log(props.helperText);
 
-	// khi khởi tạo nếu useField không trả về giá trị gì cho valueInput thì gán mặc định là modelValue
-	if (!valueInput.value) valueInput.value = props.modelValue;
-	else {
-	}
-};
-created();
+const { value: valueInput, errorMessage, meta } = useField(name, undefined);
+
+// debugger;
+
 // biến thông báo
 const infoText = ref<string>(props.helperText);
 
-// validate input
+watch(
+	() => props.helperText,
+	(newVal) => {
+		if (newVal) {
+			infoText.value = newVal;
+		} else {
+			infoText.value = "";
+		}
+	}
+);
 
 // theo dõi thông báo lỗi sau khi validate
 watch(errorMessage, (newVal) => {
-	if (newVal?.length) {
+	// debugger;
+	console.log("errorMsg>>>", newVal);
+	if (newVal && newVal.length > 0) {
 		statusInput.value = STATUS.ERROR;
 		infoText.value = newVal;
 	} else {
@@ -64,6 +62,7 @@ watch(errorMessage, (newVal) => {
 		infoText.value = props.helperText;
 	}
 });
+
 //bind vào
 watch(
 	() => props.modelValue,
@@ -75,11 +74,15 @@ watch(
 		}
 	}
 );
+
 //bind text ra ngoài
 watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 </script>
 <template>
-	<div class="input-container">
+	<div
+		class="input-container"
+		:class="{ normal: statusInput == STATUS.NORMAL, error: statusInput == STATUS.ERROR, success: meta.valid }"
+	>
 		<label
 			v-if="title"
 			:for="`${$.uid}`"
@@ -96,6 +99,8 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 				></Icon>
 			</div>
 			<input
+				:name="name"
+				v-model="valueInput"
 				:class="{
 					'has-leading-icon': leadingIcon.length > 0 && trailingIcon.length <= 0,
 					'has-trailing-icon': trailingIcon.length > 0 && leadingIcon.length <= 0,
@@ -106,7 +111,6 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 				:type="type"
 				:placeholder="placeholder"
 				:tabindex="tabindex"
-				v-model="valueInput"
 				@focus="(e: FocusEvent)=>$emit('onFocus',e)"
 				@focusin="(e: FocusEvent)=>$emit('onFocusin',e)"
 				@focusout="(e:FocusEvent)=>$emit('onFocusout',e)"
@@ -128,13 +132,11 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 			</div>
 		</div>
 		<div
-			v-if="infoText"
 			class="help-text"
-			:class="{ normal: statusInput == STATUS.NORMAL, error: statusInput == STATUS.ERROR }"
+			v-if="infoText"
 		>
 			{{ infoText }}
 		</div>
-		<!-- <font-awesome-icon icon="fa-solid fa-magnifying-glass" /> -->
 	</div>
 </template>
 <style scoped lang="scss">

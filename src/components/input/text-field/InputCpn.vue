@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch, toRef } from "vue";
-import { useField } from "vee-validate";
+import { useField, type FieldMeta } from "vee-validate";
 import Icon from "@/components/icon/IconCpn.vue";
 import { STATUS } from "@/helper/enum.js";
 
 const props = defineProps({
 	modelValue: { type: String, default: "" },
-	name: { type: String, default: "" }, // tên input dùng cho vee-validate
+	name: { type: String, default: null }, // tên input dùng cho vee-validate
 	type: { type: String, default: "text" }, // kiểu input textfield
 	title: { type: String, default: "" }, // tiêu đề input (label)
 	placeholder: { type: String, default: "" },
@@ -16,7 +16,10 @@ const props = defineProps({
 	colorLeadingIcon: { type: String, default: "" }, // màu icon
 	colorTrailingIcon: { type: String, default: "" },
 	helperText: { type: String, default: "" }, // thông báo bên dưới input
+	validate: { type: Boolean, default: true },
+	readonly: { type: Boolean, default: false },
 });
+
 const emit = defineEmits([
 	"update:modelValue",
 	"onFocus",
@@ -28,12 +31,26 @@ const emit = defineEmits([
 	"enter",
 	"shift-enter",
 	"onInput",
+	"clickTrailingIcon",
 ]);
 const name = toRef(props, "name");
 const statusInput = ref<STATUS>(STATUS.NORMAL);
-
-const { value: valueInput, errorMessage, meta } = useField(name, undefined);
-
+let valueInput = ref<unknown>();
+let errorMessage = ref<string>();
+let meta: FieldMeta<unknown>;
+if (props.validate) {
+	({ value: valueInput, errorMessage, meta } = useField(name, undefined));
+	// theo dõi thông báo lỗi sau khi validate
+	watch(errorMessage, (newVal) => {
+		if (newVal && newVal.length > 0) {
+			statusInput.value = STATUS.ERROR;
+			infoText.value = newVal;
+		} else {
+			statusInput.value = STATUS.NORMAL;
+			infoText.value = props.helperText;
+		}
+	});
+}
 // debugger;
 
 // biến thông báo
@@ -49,19 +66,6 @@ watch(
 		}
 	}
 );
-
-// theo dõi thông báo lỗi sau khi validate
-watch(errorMessage, (newVal) => {
-	// debugger;
-	console.log("errorMsg>>>", newVal);
-	if (newVal && newVal.length > 0) {
-		statusInput.value = STATUS.ERROR;
-		infoText.value = newVal;
-	} else {
-		statusInput.value = STATUS.NORMAL;
-		infoText.value = props.helperText;
-	}
-});
 
 //bind vào
 watch(
@@ -81,7 +85,7 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 <template>
 	<div
 		class="input-container"
-		:class="{ normal: statusInput == STATUS.NORMAL, error: statusInput == STATUS.ERROR, success: meta.valid }"
+		:class="{ normal: statusInput == STATUS.NORMAL, error: statusInput == STATUS.ERROR, success: meta?.valid }"
 	>
 		<label
 			v-if="title"
@@ -99,6 +103,7 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 				></Icon>
 			</div>
 			<input
+				:readonly="readonly"
 				:name="name"
 				v-model="valueInput"
 				:class="{
@@ -106,6 +111,7 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 					'has-trailing-icon': trailingIcon.length > 0 && leadingIcon.length <= 0,
 					'no-icon': trailingIcon.length <= 0 && leadingIcon.length <= 0,
 					'has-both-icon': trailingIcon.length > 0 && leadingIcon.length > 0,
+					readonly: readonly,
 				}"
 				:id="`${$.uid}`"
 				:type="type"
@@ -126,6 +132,7 @@ watch(valueInput, (newVal) => emit("update:modelValue", newVal));
 				class="trailing-icon"
 			>
 				<Icon
+					@click="($event) => emit('clickTrailingIcon', $event)"
 					:icon="trailingIcon"
 					:color="colorTrailingIcon"
 				></Icon>

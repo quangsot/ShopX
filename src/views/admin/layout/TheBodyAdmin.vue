@@ -5,7 +5,9 @@ import { ref } from "vue";
 
 const isActiveRow = ref<boolean>(false);
 
-const activeItem = ref<string[]>([]);
+const activeRow = ref<string[]>([]);
+
+const pageNumber = ref<string>();
 </script>
 <template>
 	<div class="body-admin">
@@ -21,11 +23,11 @@ const activeItem = ref<string[]>([]);
 			<div class="feature-table">
 				<div class="table-feature">
 					<InputCpn
-						title="Search"
 						class="search-feature"
 						type="text"
 						trailingIcon="fa-solid fa-magnifying-glass"
 						placeholder="nhập tên hoặc SKU"
+						:validate="false"
 					/>
 					<div v-tooltip="'Làm mới'">
 						<IconCpn
@@ -60,7 +62,7 @@ const activeItem = ref<string[]>([]);
 							<tr
 								v-for="num in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
 								:key="num"
-								:class="{ 'active-row': activeItem.includes(`${num}`) }"
+								:class="{ 'active-row': activeRow.includes(`${num}`) }"
 							>
 								<!-- :class="{ 'active-row': checkList[num] }" -->
 								<td>
@@ -69,9 +71,9 @@ const activeItem = ref<string[]>([]);
 										@checked="
 											(value) => {
 												if (value[0]) {
-													activeItem.push(value[1]);
-												} else activeItem = activeItem.filter((item) => item != value[1]);
-												console.log('active item>>>', activeItem);
+													activeRow.push(value[1]);
+												} else activeRow = activeRow.filter((item) => item != value[1]);
+												console.log('active item>>>', activeRow);
 											}
 										"
 									/>
@@ -110,8 +112,20 @@ const activeItem = ref<string[]>([]);
 					<div class="total-record">Tổng số: <span>100</span></div>
 					<div class="paging">
 						<div class="record-page-number">
-							<p>Bản ghi/Trang: 10</p>
-							<div>Combobox</div>
+							<p>Bản ghi/Trang: {{ pageNumber }}</p>
+							<div>
+								<ComboboxCpn
+									style="width: 80px"
+									:validate="false"
+									:values="[10, 20, 50, 100]"
+									:displays="['10', '20', '50', '100']"
+									:autoSelect="true"
+									:readonly="true"
+									trailing-icon="fa-solid fa-angle-up"
+									menuPosition="top"
+									@getItemSelected="(value: [string,string])=>pageNumber = value[1]"
+								/>
+							</div>
 						</div>
 						<div class="index-page">
 							<p>1 - 10 bản ghi</p>
@@ -265,6 +279,7 @@ const activeItem = ref<string[]>([]);
 					.index-page {
 						display: flex;
 						gap: 20px;
+						align-items: center;
 					}
 					.index-page {
 						.arrow {

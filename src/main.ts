@@ -19,6 +19,7 @@ library.add(fas, far, fab);
 import InputCpn from "@/components/input/text-field/InputCpn.vue";
 import ButtonCpn from "./components/button/ButtonCpn.vue";
 import IconCpn from "@/components/icon/IconCpn.vue";
+import ComboboxCpn from "@/components/input/ComboboxCpn.vue";
 
 // directive
 import tooltip from "./helper/directives/TooltipDirective.js";
@@ -28,6 +29,6 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 app.component("font-awesome-icon", FontAwesomeIcon);
-app.component("InputCpn", InputCpn).component("ButtonCpn", ButtonCpn).component("IconCpn", IconCpn);
+app.component("InputCpn", InputCpn).component("ButtonCpn", ButtonCpn).component("IconCpn", IconCpn).component("ComboboxCpn", ComboboxCpn);
 app.directive("tooltip", tooltip).directive("outside", clickOutSide);
 app.mount("#app");

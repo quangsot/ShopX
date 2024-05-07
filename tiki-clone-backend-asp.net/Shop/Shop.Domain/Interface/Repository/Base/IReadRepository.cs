@@ -23,7 +23,7 @@ namespace Shop.Domain.Interface.Repository
         /// </summary>
         /// <returns></returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        Task<T> GetByIdAsync(Guid id, DbTransaction? dbTransaction = null);
+        Task<T?> GetByIdAsync(Guid id, DbTransaction? dbTransaction = null);
         /// <summary>
         /// lấy nhiều bản ghi theo danh sách Id
         /// </summary>
@@ -36,7 +36,7 @@ namespace Shop.Domain.Interface.Repository
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        Task<T> GetByCodeAsync(string code, DbTransaction? dbTransaction = null);
+        Task<T?> GetByCodeAsync(string code, DbTransaction? dbTransaction = null);
         /// <summary>
         /// lọc bản ghi
         /// </summary>
@@ -50,7 +50,7 @@ namespace Shop.Domain.Interface.Repository
         /// <param name="filterInput"></param>
         /// <returns>danh sách đã được lọc và phân trang</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        //Task<FilterPaging<T>> FillterPagingAsync(int pageNumber, int pageSize, string condition);
+        Task<FilterPaging<T>> FillterPagingAsync(int pageNumber, int pageSize, string search);
 
     }
 }

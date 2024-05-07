@@ -15,6 +15,7 @@ namespace Shop.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {
+        public Guid UowId { get; set; } = Guid.NewGuid();
         private readonly DbContext _dbContext;
         private DbConnection? _connection;
         private DbTransaction? _transaction = null;

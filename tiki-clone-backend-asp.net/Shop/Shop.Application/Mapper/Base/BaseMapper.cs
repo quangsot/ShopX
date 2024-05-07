@@ -14,6 +14,8 @@ namespace Shop.Application.Mapper
             CreateMap<Entity, EntityDTO>().ReverseMap();
             CreateMap<EntityCreateDTO, Entity>().ReverseMap();
             CreateMap<EntityUpdateDTO, Entity>().ReverseMap();
+            CreateMap<EntityUpdateDTO, Entity>()
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null)); // Giữ nguyên giá trị nếu không trùng trường
 
         }
     }

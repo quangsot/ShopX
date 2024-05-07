@@ -19,8 +19,6 @@ public partial class Productconfiguration
 
     public string? Sku { get; set; }
 
-    public sbyte? AverageStar { get; set; }
-
     public virtual Product? Product { get; set; }
 
     public virtual Productimage? ProductImage { get; set; }

@@ -15,13 +15,13 @@ public partial class Productdetail
 
     public string? InfoDetail { get; set; }
 
-    public string? Discription { get; set; }
+    public string? Description { get; set; }
 
     public int? TotalSell { get; set; }
 
     public int? TotalRating { get; set; }
 
-    public int? TotalStar { get; set; }
+    public int TotalStar { get; set; }
 
     public virtual ICollection<Orderitem> Orderitems { get; set; } = new List<Orderitem>();
 

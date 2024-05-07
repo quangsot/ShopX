@@ -21,7 +21,7 @@ namespace Shop.Infrastructure.Repository
             _variationRepositry = variationRepositry;
         }
 
-        public async Task<FilterPaging<ProductResponse>> FilterPagingProductAsync(string category, int page, int size, string orderBy, Dictionary<string, string> conditions)
+        public async Task<FilterPaging<ProductResponse>> FilterPagingProductAsync(int page, int size, string orderBy, Dictionary<string, string> conditions)
         {
             string sql = "SELECT #output FROM product p " +
                 "JOIN category c ON p.CategoryId = c.Id " +
@@ -31,26 +31,49 @@ namespace Shop.Infrastructure.Repository
                 "JOIN variationoptiongroup v ON p1.VariationOptionGroupId = v.Id " +
                 "JOIN variationoption v1 ON v.Id = v1.VariationOptionGroupId " +
                 "JOIN variation v2 ON v1.VariationId = v2.Id " +
-                "WHERE c.Name = @category " +
+                "WHERE 1 = 1 " +
                 "#condition #paging";
 
             string condition = string.Empty;
             DynamicParameters parameters = new();
 
-            parameters.Add("category", category);
+            if (conditions.ContainsKey("date"))
+            {
+                string date = conditions["date"];
+                var dateRange = date.Split(',');
+                if (dateRange[0] != null)
+                {
+                    condition += $"AND p.CreatedAt >= @startDate ";
+                    parameters.Add("startDate", dateRange[0]);
+                }
+                if (dateRange[1] != null)
+                {
+                    condition += $"AND p.CreatedAt <= @endDate ";
+                    parameters.Add("endDate", dateRange[1]);
+                }
+                conditions.Remove("date");
+            }
+
+            if (conditions.ContainsKey("category"))
+            {
+                string category = conditions["category"];
+                condition += $"AND c.Name = @category ";
+                parameters.Add("category", category);
+                conditions.Remove("category");
+            }
 
             if (conditions.ContainsKey("supplier"))
             {
-                string supllier = conditions["supllier"];
-                condition += $"AND s.Name = @supllier";
-                parameters.Add("supllier", supllier);
-                conditions.Remove("supllier");
+                string supplier = conditions["supplier"];
+                condition += $"AND s.Name = @supplier ";
+                parameters.Add("supplier", supplier);
+                conditions.Remove("supplier");
             }
 
             if (conditions.ContainsKey("brand"))
             {
                 string brand = conditions["brand"];
-                condition += $"AND b.Name = @brand";
+                condition += $"AND b.Name = @brand ";
                 parameters.Add("brand", brand);
                 conditions.Remove("brand");
             }
@@ -59,9 +82,16 @@ namespace Shop.Infrastructure.Repository
             {
                 string price = conditions["price"];
                 var priceRange = price.Split(',');
-                condition += $"AND p1.Price >= @priceMin AND p1.Price <= @priceMax ";
-                parameters.Add("priceMin", priceRange[0]);
-                parameters.Add("priceMax", priceRange[1]);
+                if (priceRange[0] != null)
+                {
+                    condition += $"AND p1.Price >= @priceMin ";
+                    parameters.Add("priceMin", priceRange[0]);
+                }
+                if (priceRange[1] != null)
+                {
+                    condition += $"AND p1.Price <= @priceMax ";
+                    parameters.Add("priceMax", priceRange[1]);
+                }
                 conditions.Remove("price");
             }
 
@@ -97,7 +127,8 @@ namespace Shop.Infrastructure.Repository
                 int skipRecord = (currentPage - 1) * size;
 
                 string sort = string.Empty;
-                if (!string.IsNullOrEmpty(orderBy)){
+                if (!string.IsNullOrEmpty(orderBy))
+                {
                     sort = orderBy.Replace(",", " ");
                     condition += $" ORDER BY @sort";
                     parameters.Add("sort", sort);

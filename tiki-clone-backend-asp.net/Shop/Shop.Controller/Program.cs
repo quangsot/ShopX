@@ -24,6 +24,14 @@ using Shop.Application.Services.ProductsService;
 using Shop.Infrastructure.Repository.ProductsRepository;
 using Shop.Domain.Interface.Repository.ProductsRepository;
 using Shop.Application.Common;
+using Shop.Domain.Interface.Repository.DiscountRepository;
+using Shop.Infrastructure.Repository.DiscountRepository;
+using Shop.Application.Interface.DiscountService;
+using Shop.Application.Services.DiscountService;
+using Shop.Domain.Interface.Repository.OrdersRepository;
+using Shop.Infrastructure.Repository.OrdersRepository;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +40,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" },
+                In = ParameterLocation.Header
+            },
+            new string[] { }
+        }
+    });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -73,6 +101,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IHelper, Helper>();
 
 builder.Services.AddScoped<IUnitOfWork>(option => new UnitOfWork(new ShopDbContext(builder.Configuration.GetConnectionString("MySQL"))));
+//builder.Services.AddScoped<IUnitOfWork>(option => new UnitOfWork(new ShopDbContext()));
 
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -108,6 +137,18 @@ builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+
+builder.Services.AddScoped<IOrderUseCase, OrderUseCase>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IShoppingCartItemRepository, ShoppingCartItemRepository>();
+
+
+
+builder.Services.AddScoped<IProductDiscountService, ProductDiscountService>();
+builder.Services.AddScoped<IProductDiscountRepository, ProductDiscountRepository>();
 
 
 builder.Services.AddMemoryCache();
@@ -144,6 +185,8 @@ builder.Services.AddLogging(option =>
 //        ValidateLifetime = true,
 //    };
 //});
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

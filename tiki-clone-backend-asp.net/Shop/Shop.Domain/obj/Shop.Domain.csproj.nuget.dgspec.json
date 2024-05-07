@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj": {}
+    "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj": {}
   },
   "projects": {
-    "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj": {
+    "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj",
+        "projectUniqueName": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj",
         "projectName": "Shop.Domain",
-        "projectPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj",
+        "projectPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj",
         "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\obj\\",
+        "outputPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",

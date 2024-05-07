@@ -13,7 +13,7 @@ public partial class User
 
     public string? Password { get; set; }
 
-    public Guid RoleId { get; set; }
+    public Guid? RoleId { get; set; }
 
     public string? Avatar { get; set; }
 
@@ -42,8 +42,6 @@ public partial class User
     public virtual Role? Role { get; set; }
 
     public virtual ICollection<Shoppingcartitem> Shoppingcartitems { get; set; } = new List<Shoppingcartitem>();
-
-    public virtual ICollection<Userpaymentmethod> Userpaymentmethods { get; set; } = new List<Userpaymentmethod>();
 
     public virtual ICollection<Viewedproduct> Viewedproducts { get; set; } = new List<Viewedproduct>();
 }

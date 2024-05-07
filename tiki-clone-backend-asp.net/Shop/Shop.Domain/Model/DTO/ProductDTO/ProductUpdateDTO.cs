@@ -18,6 +18,8 @@ namespace Shop.Domain.Model.DTO
 
         public Guid? BrandId { get; set; }
 
+        public Guid? SupplierId { get; set; }
+
         public sbyte? Status { get; set; }
     }
 }

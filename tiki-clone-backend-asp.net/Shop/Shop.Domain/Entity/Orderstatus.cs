@@ -5,11 +5,11 @@ namespace Shop.Domain.Entity;
 
 public partial class Orderstatus
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
-    public int? Status { get; set; }
+    public string? StatusName { get; set; }
 
-    public virtual ICollection<Orderhistorystatus> Orderhistorystatuses { get; set; } = new List<Orderhistorystatus>();
+    public string? Description { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

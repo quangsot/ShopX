@@ -2826,11 +2826,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\Shop.Controller.csproj",
+      "projectUniqueName": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\Shop.Controller.csproj",
       "projectName": "Shop.Controller",
-      "projectPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\Shop.Controller.csproj",
+      "projectPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\Shop.Controller.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\obj\\",
+      "outputPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2847,14 +2847,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Application\\Shop.Application.csproj": {
-              "projectPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Application\\Shop.Application.csproj"
+            "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Application\\Shop.Application.csproj": {
+              "projectPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Application\\Shop.Application.csproj"
             },
-            "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj": {
-              "projectPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj"
+            "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj": {
+              "projectPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj"
             },
-            "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Infrastructure\\Shop.Infrastructure.csproj": {
-              "projectPath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Infrastructure\\Shop.Infrastructure.csproj"
+            "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Infrastructure\\Shop.Infrastructure.csproj": {
+              "projectPath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Infrastructure\\Shop.Infrastructure.csproj"
             }
           }
         }

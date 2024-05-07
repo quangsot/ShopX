@@ -13,6 +13,7 @@ namespace Shop.Infrastructure.Repository
     {
         public OrderRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
+
         }
     }
 }

@@ -24,48 +24,83 @@ namespace Shop.Infrastructure
             _dbSet = _dbContext.Set<T>();
         }
 
-        public virtual async Task<T> CreateAsync(T entity, DbTransaction? dbContextTransaction)
+        public virtual async Task<T> CreateAsync(T entity, DbTransaction? dbContextTransaction = null)
         {
             if (dbContextTransaction != null)
             {
-                await _dbContext.Database.UseTransactionAsync(dbContextTransaction);
+                _dbContext.Database.UseTransaction(dbContextTransaction);
+                _ = await _dbSet.AddAsync(entity);
             }
-            _ = await _dbSet.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            else
+            {
+                _ = await _dbSet.AddAsync(entity);
+                _dbContext.SaveChanges();
+            }
             return entity;
         }
 
-        public virtual async Task<List<T>> CreateManyAsync(List<T> entities, DbTransaction? dbContextTransaction)
+        public virtual async Task<List<T>> CreateManyAsync(List<T> entities, DbTransaction? dbContextTransaction = null)
         {
             if (dbContextTransaction != null)
             {
                 await _dbContext.Database.UseTransactionAsync(dbContextTransaction);
+                await _dbContext.AddRangeAsync(entities);
             }
-            await _dbSet.AddRangeAsync(entities);
-            await _dbContext.SaveChangesAsync();
+            else
+            {
+                await _dbSet.AddRangeAsync(entities);
+                await _dbContext.SaveChangesAsync();
+            }
             return entities;
         }
 
-        public virtual T Delete(T entity)
+        public virtual async Task<T> Delete(T entity, DbTransaction? dbContextTransaction = null)
         {
-            _dbSet.Remove(entity);
+            if (dbContextTransaction != null)
+            {
+                await _dbContext.Database.UseTransactionAsync(dbContextTransaction);
+                _dbSet.Remove(entity);
+            }
+            else
+            {
+                _dbSet.Remove(entity);
+                _dbContext.SaveChanges();
+            }
             return entity;
         }
 
-        public virtual int DeleteManyAsync(List<T> entities)
+        public virtual async Task<int> DeleteManyAsync(List<T> entities, DbTransaction? dbContextTransaction = null)
         {
-            _dbSet.RemoveRange(entities);
+            if (dbContextTransaction != null)
+            {
+                await _dbContext.Database.UseTransactionAsync(dbContextTransaction);
+                _dbSet.RemoveRange(entities);
+            }
+            else
+            {
+                _dbSet.RemoveRange(entities);
+                _dbContext.SaveChanges();
+            }
             return entities.Count;
         }
 
-        public virtual T UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity, DbTransaction? dbContextTransaction = null)
         {
             // ghép nối vào DBcontext
             _dbContext.Attach(entity);
             // thay đổi trạng thái của đối tượng trong context
             _dbContext.Entry(entity).State = EntityState.Modified;
-
-            _dbSet.Update(entity);
+            //_dbSet.Entry(entity).State = EntityState.Modified;
+            if (dbContextTransaction != null)
+            {
+                await _dbContext.Database.UseTransactionAsync(dbContextTransaction);
+                _dbSet.Update(entity);
+            }
+            else
+            {
+                _dbSet.Update(entity);
+                _dbContext.SaveChanges();
+            }
             return entity;
         }
 

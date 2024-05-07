@@ -10,6 +10,7 @@ namespace Shop.Application.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable, IAsyncDisposable
     {
+        public Guid UowId { get; set; }
         DbContext DbContext { get; }
         DbConnection Connection { get; }
         DbTransaction? Transaction { get; }

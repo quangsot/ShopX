@@ -14,18 +14,9 @@ namespace Shop.Controller.Controllers
     {
         private readonly IBrandService _brandService;
 
-        private readonly IBrandRepository _brandRepository;
-        public BrandsController(IBrandService brandService, IBrandRepository brandRepository) : base(brandService)
+        public BrandsController(IBrandService brandService) : base(brandService)
         {
             _brandService = brandService;
-            _brandRepository = brandRepository;
-        }
-
-        [HttpPost("test")]
-        public async Task<IActionResult> TestBrand()
-        {
-            var result = await _brandService.TestBrand();
-            return Ok(result);
         }
 
     }

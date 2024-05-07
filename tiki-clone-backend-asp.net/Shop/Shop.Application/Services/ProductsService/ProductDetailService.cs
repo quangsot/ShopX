@@ -20,7 +20,7 @@ namespace Shop.Application.Services.ProductsService
             _productDetailRepository = productDetailRepository;
         }
 
-        public async Task<ProductDetailDTO> GetProductDetailByProductId(Guid productId)
+        public async Task<ProductDetailDTO> GetProductDetailByProductIdAsync(Guid productId)
         {
             var result = await _productDetailRepository.GetProductdetailByProductId(productId);
             var resultDTO = MapEntityToEntiyDTO(result);

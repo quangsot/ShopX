@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "o/sSKkKBBPTx9QNUmcqdUPadGP6vXYHtxyzoNBS8xb3uGuKc4GPntgjWFdjw8pJ45SX7q00ZKx3R1yte7jvzeA==",
+  "dgSpecHash": "p3FbBd3FpvA89cpyCQhpg36xCgf2dVpzer1NK+Vpfx7t7XzKJvpSl+AcEn2lhXdH8Gkf3u9aGyvmZUEn+BHDCg==",
   "success": true,
-  "projectFilePath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Domain\\Shop.Domain.csproj",
+  "projectFilePath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Domain\\Shop.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.25\\microsoft.aspnetcore.authentication.jwtbearer.6.0.25.nupkg.sha512",

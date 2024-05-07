@@ -15,21 +15,21 @@ namespace Shop.Domain.Interface.Repository
         /// <param name="entity"></param>
         /// <returns>bản ghi đã thêm mới</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        Task<T> CreateAsync(T entity, DbTransaction? dbContextTransaction);
+        Task<T> CreateAsync(T entity, DbTransaction? dbContextTransaction = null);
         /// <summary/>
         /// thêm mới nhiều bản ghi
         /// </summary>
         /// <param name="entities"></param>
         /// <returns>số lượng bản ghi đã thêm mới</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        Task<List<T>> CreateManyAsync(List<T> entities, DbTransaction? dbContextTransaction);
+        Task<List<T>> CreateManyAsync(List<T> entities, DbTransaction? dbContextTransaction = null);
         /// <summary>
         /// cập nhật 1 bản ghi
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>bản ghi đã cập nhật</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        T UpdateAsync(T entity);
+        Task<T> UpdateAsync(T entity, DbTransaction? dbContextTransaction = null);
         /// <summary>
         /// cập nhật nhiều bản ghi
         /// </summary>
@@ -43,12 +43,12 @@ namespace Shop.Domain.Interface.Repository
         /// <param name="entity"></param>
         /// <returns>entity đã bị xóa</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        T Delete(T entity);
+        Task<T> Delete(T entity, DbTransaction? dbContextTransaction = null);
         /// <summary>
         /// xóa nhiều bản ghi
         /// </summary>
         /// <returns>boolean: true or false</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        int DeleteManyAsync(List<T> entities);
+        Task<int> DeleteManyAsync(List<T> entities, DbTransaction? dbContextTransaction = null);
     }
 }

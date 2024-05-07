@@ -21,6 +21,12 @@ namespace Shop.Application.Services.ProductsService
             _variationOptionRepository = variationOptionRepository;
         }
 
+        public async Task<List<string>> GetVariationOptionByVariationId(Guid Id, int page = 1, int size = 10)
+        {
+            var result = await _variationOptionRepository.GetVariationOptionByVariationId(page,size,Id);
+            return result;
+        }
+
         protected override Task EditData(Variationoption entity)
         {
             return Task.CompletedTask;
@@ -30,5 +36,7 @@ namespace Shop.Application.Services.ProductsService
         {
             return Task.CompletedTask;
         }
+
+        
     }
 }

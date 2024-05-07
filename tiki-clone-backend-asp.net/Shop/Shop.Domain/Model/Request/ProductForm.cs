@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Domain.Model.DTO;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,11 @@ namespace Shop.Domain.Model.Request
 
         public string? Discription { get; set; }
 
-        public ICollection<IFormFile>? Images { get; set; }
+        [Required(ErrorMessage = "Ảnh sản phẩm không được để trống.")]
+        public List<IFormFile> Images { get; set; } = new();
 
-        public ICollection<VariationForm>? Variations { get; set; } = new List<VariationForm>();
+        [Required(ErrorMessage = "Thông tin biến thể không được để trống.")]
+        [FromForm]
+        public List<VariationForm> Variations { get; set; } = new();
     }
 }

@@ -27,6 +27,8 @@ public partial class Product
 
     public Guid? SupplierId { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
     public virtual Brand? Brand { get; set; }
 
     public virtual Category? Category { get; set; }

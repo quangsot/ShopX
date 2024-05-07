@@ -13,6 +13,7 @@ public partial class ShopDbContext : DbContext
         _connectionString = connectionString;
     }
 
+
     public ShopDbContext(DbContextOptions<ShopDbContext> options)
         : base(options)
     {
@@ -22,8 +23,6 @@ public partial class ShopDbContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<Categorydiscount> Categorydiscounts { get; set; }
-
     public virtual DbSet<Comment> Comments { get; set; }
 
     public virtual DbSet<Discount> Discounts { get; set; }
@@ -31,8 +30,6 @@ public partial class ShopDbContext : DbContext
     public virtual DbSet<Filterproperty> Filterproperties { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
-
-    public virtual DbSet<Orderhistorystatus> Orderhistorystatuses { get; set; }
 
     public virtual DbSet<Orderitem> Orderitems { get; set; }
 
@@ -61,8 +58,6 @@ public partial class ShopDbContext : DbContext
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
-    public virtual DbSet<Userpaymentmethod> Userpaymentmethods { get; set; }
 
     public virtual DbSet<Variation> Variations { get; set; }
 
@@ -125,25 +120,6 @@ public partial class ShopDbContext : DbContext
                 .HasConstraintName("category_ibfk_1");
         });
 
-        modelBuilder.Entity<Categorydiscount>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("categorydiscount");
-
-            entity.HasIndex(e => e.CategoryId, "CategoryId");
-
-            entity.HasIndex(e => e.DiscountId, "DiscountId");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.Categorydiscounts)
-                .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("categorydiscount_ibfk_2");
-
-            entity.HasOne(d => d.Discount).WithMany(p => p.Categorydiscounts)
-                .HasForeignKey(d => d.DiscountId)
-                .HasConstraintName("categorydiscount_ibfk_1");
-        });
-
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -184,10 +160,12 @@ public partial class ShopDbContext : DbContext
 
             entity.Property(e => e.Code)
                 .HasMaxLength(100)
+                .HasDefaultValueSql("''")
                 .IsFixedLength();
             entity.Property(e => e.EndDate).HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
+                .HasDefaultValueSql("''")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
@@ -226,46 +204,28 @@ public partial class ShopDbContext : DbContext
 
             entity.HasIndex(e => e.OrderStatus, "OrderStatus");
 
+            entity.HasIndex(e => e.PaymentTypeId, "PaymentTypeId");
+
             entity.HasIndex(e => e.UserId, "UserId");
 
             entity.Property(e => e.Code)
                 .HasMaxLength(100)
                 .IsFixedLength();
-            entity.Property(e => e.Name)
-                .HasMaxLength(255)
-                .UseCollation("utf8mb3_general_ci")
-                .HasCharSet("utf8mb3");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.ShippingAddress).HasColumnType("text");
 
             entity.HasOne(d => d.OrderStatusNavigation).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.OrderStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("order_ibfk_2");
+
+            entity.HasOne(d => d.PaymentType).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.PaymentTypeId)
+                .HasConstraintName("order_ibfk_3");
 
             entity.HasOne(d => d.User).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("order_ibfk_1");
-        });
-
-        modelBuilder.Entity<Orderhistorystatus>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("orderhistorystatus");
-
-            entity.HasIndex(e => e.OrderId, "OrderId");
-
-            entity.HasIndex(e => e.StatusId, "StatusId");
-
-            entity.Property(e => e.Date).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.Orderhistorystatuses)
-                .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("orderhistorystatus_ibfk_1");
-
-            entity.HasOne(d => d.Status).WithMany(p => p.Orderhistorystatuses)
-                .HasForeignKey(d => d.StatusId)
-                .HasConstraintName("orderhistorystatus_ibfk_2");
         });
 
         modelBuilder.Entity<Orderitem>(entity =>
@@ -298,6 +258,12 @@ public partial class ShopDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.ToTable("orderstatus");
+
+            entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.StatusName)
+                .HasMaxLength(100)
+                .UseCollation("utf8mb3_general_ci")
+                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<Paymenttype>(entity =>
@@ -329,6 +295,9 @@ public partial class ShopDbContext : DbContext
             entity.Property(e => e.Code)
                 .HasMaxLength(100)
                 .IsFixedLength();
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .UseCollation("utf8mb3_general_ci")
@@ -370,7 +339,7 @@ public partial class ShopDbContext : DbContext
 
             entity.HasOne(d => d.ProductImage).WithMany(p => p.Productconfigurations)
                 .HasForeignKey(d => d.ProductImageId)
-                .HasConstraintName("productconfiguration_ibfk_3");
+                .HasConstraintName("productconfiguration_ibfk_6");
 
             entity.HasOne(d => d.VariationOptionGroup).WithMany(p => p.Productconfigurations)
                 .HasForeignKey(d => d.VariationOptionGroupId)
@@ -554,36 +523,6 @@ public partial class ShopDbContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)
                 .HasConstraintName("user_ibfk_1");
-        });
-
-        modelBuilder.Entity<Userpaymentmethod>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("userpaymentmethod");
-
-            entity.HasIndex(e => e.OrderId, "OrderId");
-
-            entity.HasIndex(e => e.PaymentTypeId, "PaymentTypeId");
-
-            entity.HasIndex(e => e.UserId, "UserId");
-
-            entity.Property(e => e.AccountNumber)
-                .HasMaxLength(255)
-                .IsFixedLength();
-            entity.Property(e => e.Provider).HasMaxLength(255);
-
-            entity.HasOne(d => d.Order).WithMany(p => p.Userpaymentmethods)
-                .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("userpaymentmethod_ibfk_1");
-
-            entity.HasOne(d => d.PaymentType).WithMany(p => p.Userpaymentmethods)
-                .HasForeignKey(d => d.PaymentTypeId)
-                .HasConstraintName("userpaymentmethod_ibfk_3");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Userpaymentmethods)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("userpaymentmethod_ibfk_2");
         });
 
         modelBuilder.Entity<Variation>(entity =>

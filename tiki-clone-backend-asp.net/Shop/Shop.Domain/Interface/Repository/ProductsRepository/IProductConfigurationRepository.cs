@@ -23,5 +23,12 @@ namespace Shop.Domain.Interface.Repository.ProductsRepository
         /// <param name="productConfigId"></param>
         /// <returns></returns>
         Task<Dictionary<string, string>> GetVariationProductAsync(Guid productConfigId);
+
+        /// <summary>
+        /// check trùng SKU
+        /// </summary>
+        /// <param name="productConfigId"></param>
+        /// <returns></returns>
+        bool IsDuplicateSKU(string sku);
     }
 }

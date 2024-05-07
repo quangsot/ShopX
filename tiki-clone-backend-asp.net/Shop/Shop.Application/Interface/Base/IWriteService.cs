@@ -32,7 +32,7 @@ namespace Shop.Application.Interface
         /// <param name="entity"></param>
         /// <returns>bản ghi đã cập nhật</returns>
         /// author: Trương Mạnh Quang (28/10/2023)
-        TEntityDTO Update(TEntityUpdateDTO entity);
+        Task<TEntityDTO> UpdateAsync(Guid id, TEntityUpdateDTO entityUpdatedDTO, DbTransaction? dbContextTransaction = null);
         /// <summary>
         /// cập nhật nhiều bản ghi
         /// </summary>

@@ -9,29 +9,23 @@ public partial class Order
 
     public string? Code { get; set; }
 
-    public string? Name { get; set; }
-
     public Guid? UserId { get; set; }
-
-    public Guid? UserPaymentMethodId { get; set; }
-
-    public double? ShippingtFee { get; set; }
 
     public string? ShippingAddress { get; set; }
 
     public double? TotalPrice { get; set; }
 
-    public Guid? OrderStatus { get; set; }
+    public int OrderStatus { get; set; }
 
     public DateTime? OrderDate { get; set; }
 
-    public virtual Orderstatus? OrderStatusNavigation { get; set; }
+    public int? PaymentTypeId { get; set; }
 
-    public virtual ICollection<Orderhistorystatus> Orderhistorystatuses { get; set; } = new List<Orderhistorystatus>();
+    public virtual Orderstatus OrderStatusNavigation { get; set; } = null!;
 
     public virtual ICollection<Orderitem> Orderitems { get; set; } = new List<Orderitem>();
 
-    public virtual User? User { get; set; }
+    public virtual Paymenttype? PaymentType { get; set; }
 
-    public virtual ICollection<Userpaymentmethod> Userpaymentmethods { get; set; } = new List<Userpaymentmethod>();
+    public virtual User? User { get; set; }
 }

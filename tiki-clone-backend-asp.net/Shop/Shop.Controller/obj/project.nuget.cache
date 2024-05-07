@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nn/hD39ESG0X/xFEXsyU0DIC6hRFjgWoAn/rERsbPoZpIjAW0KLrIyeO1EWogJ/0LjG92VLI6AoyVzFBloS/3Q==",
+  "dgSpecHash": "OHlA+zhuE+rJ2tK2YWmHSHrDt50RDbkVD48R4xZjzQRmJ03uCTZr3pTfopMTZWXj1P5MEZo3DPZzOQcgFOPsYw==",
   "success": true,
-  "projectFilePath": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\Shop.Controller.csproj",
+  "projectFilePath": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\Shop.Controller.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

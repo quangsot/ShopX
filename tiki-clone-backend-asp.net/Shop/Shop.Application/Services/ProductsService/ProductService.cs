@@ -39,5 +39,14 @@ namespace Shop.Application.Services.ProductsService
             // constraint phải hợp lệ
             return Task.CompletedTask;
         }
+
+        public override async Task<ProductDTO?> DeleteAsync(Guid id)
+        {
+            var productNeedDelete = await _productRepository.GetByIdAsync(id);
+            if (productNeedDelete == null) return null;
+            productNeedDelete.Status = 0;
+            var productDeleted = await _productRepository.UpdateAsync(productNeedDelete);
+            return MapEntityToEntiyDTO(productDeleted);
+        }
     }
 }

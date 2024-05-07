@@ -16,13 +16,13 @@ namespace Shop.Infrastructure.Repository
         {
         }
 
-        public async Task<List<string>> GetImagesByProductDetailAsync(Guid productDetailId)
+        public async Task<List<Productimage>> GetImagesByProductDetailAsync(Guid productDetailId)
         {
-            string sql = "SELECT `Path` FROM productimage " +
-                "WHERE productimage.ProductDetailId = @productDetailId;";
+            string sql = "SELECT * FROM productimage " +
+                    "WHERE productimage.ProductDetailId = @productDetailId;";
             DynamicParameters parameters = new();
-            parameters.Add("@productDetailId",productDetailId);
-            var result = await _dbConnection.QueryAsync<string>(sql, parameters);
+            parameters.Add("@productDetailId", productDetailId);
+            var result = await _dbConnection.QueryAsync<Productimage>(sql, parameters);
             return result.ToList();
         }
     }

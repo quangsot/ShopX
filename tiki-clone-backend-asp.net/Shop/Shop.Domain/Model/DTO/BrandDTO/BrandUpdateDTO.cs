@@ -9,6 +9,8 @@ namespace Shop.Domain.Model.DTO
 {
     public class BrandUpdateDTO
     {
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Mã không được để trống")]
         public string? Code { get; set; }
 

@@ -28,6 +28,6 @@ namespace Shop.Domain.Model.DTO
 
         public List<ProductConfigResponse> productConfigs { get; set; } = new();
 
-        public List<string> Images { get; set; } = new();
+        public List<string?>? Images { get; set; } = new();
     }
 }

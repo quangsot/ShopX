@@ -1,19 +1,35 @@
 {
   "Files": [
     {
-      "Id": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\wwwroot\\Images\\CA.jpg",
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\CA.jpg",
       "PackagePath": "staticwebassets\\Images\\CA.jpg"
     },
     {
-      "Id": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\wwwroot\\Images\\Capture1.PNG",
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\Capture1.PNG",
       "PackagePath": "staticwebassets\\Images\\Capture1.PNG"
     },
     {
-      "Id": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\wwwroot\\Images\\Capture2.PNG",
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\Capture2.PNG",
       "PackagePath": "staticwebassets\\Images\\Capture2.PNG"
     },
     {
-      "Id": "D:\\project\\tiki-clone\\TIKI_CLONE\\tiki-clone-backend-asp.net\\Shop\\Shop.Controller\\wwwroot\\Images\\testImage.PNG",
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\commit-code1.PNG",
+      "PackagePath": "staticwebassets\\Images\\commit-code1.PNG"
+    },
+    {
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\commit-code2.PNG",
+      "PackagePath": "staticwebassets\\Images\\commit-code2.PNG"
+    },
+    {
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\commit-code3.PNG",
+      "PackagePath": "staticwebassets\\Images\\commit-code3.PNG"
+    },
+    {
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\commit-code4.PNG",
+      "PackagePath": "staticwebassets\\Images\\commit-code4.PNG"
+    },
+    {
+      "Id": "D:\\project\\tiki-clone\\TIKI\\BE_TIKI_CLONE\\Shop\\Shop.Controller\\wwwroot\\Images\\testImage.PNG",
       "PackagePath": "staticwebassets\\Images\\testImage.PNG"
     },
     {

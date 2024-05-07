@@ -14,6 +14,6 @@ namespace Shop.Domain.Interface.Repository
         /// </summary>
         /// <param name="productDetailId"></param>
         /// <returns></returns>
-        Task<List<string>> GetImagesByProductDetailAsync(Guid productDetailId);
+        Task<List<Productimage>> GetImagesByProductDetailAsync(Guid productDetailId);
     }
 }

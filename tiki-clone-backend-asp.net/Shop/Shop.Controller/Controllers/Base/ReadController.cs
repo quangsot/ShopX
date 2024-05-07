@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application;
 using Shop.Application.Interface;
+using Shop.Domain.Model.Response.Base;
+using Shop.Domain.Model.Response;
+using Shop.Domain.Model.Output;
 
 namespace Shop.Controllers
 {
@@ -23,8 +26,7 @@ namespace Shop.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _readService.GetAllAsync();
-
-            return Ok(result);
+            return Ok(new BaseResponse<IEnumerable<TEntityDTO>>() { Data = result });
         }
 
         /// <summary>
@@ -38,7 +40,7 @@ namespace Shop.Controllers
         {
             var result = await _readService.GetByIdAsync(id);
 
-            return Ok(result);
+            return Ok(new BaseResponse<TEntityDTO>() { Data = result });
         }
 
         /// <summary>
@@ -47,14 +49,20 @@ namespace Shop.Controllers
         /// <param name="ids"></param>
         /// <returns></returns>
         /// author: Trương Mạnh Quang (15/11/2023)
-        [HttpPost("ids")]
+        [HttpPost("get-ids")]
         public async Task<IActionResult> GetByIdsAsync([FromBody] List<Guid> ids)
         {
             var result = await _readService.GetByIdsAsync(ids);
 
-            return Ok(result);
+            return Ok(new BaseResponse<IEnumerable<TEntityDTO>>() { Data = result });
         }
 
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterPagingAsync([FromQuery] int page, [FromQuery] int size, [FromQuery] string? search)
+        {
+            var result = await _readService.FillterPagingAsync(page: page, size: size, search: search);
 
+            return Ok(new PageResponse<TEntityDTO>() { Data = result });
+        }
     }
 }

@@ -52,5 +52,11 @@ namespace Shop.Infrastructure.Repository.ProductsRepository
 
             return valuePairs;
         }
+
+        public bool IsDuplicateSKU(string sku)
+        {
+            var productConfig =  _dbSet.Where(p => p.Sku == sku).ToList();
+            return !(productConfig == null || productConfig.Count == 0);
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Shop.Controller.Middleware
                     Email = email
                 };
 
-                var roles = await _roleService.GetCodeByIdAsync(user.RoleId);
+                var roles = await _roleService.GetCodeByIdAsync(user.RoleId ?? Guid.Empty);
                 authorizeUser.Role = (Roles)roles;
                 httpContext.Items["User"] = authorizeUser;
             }

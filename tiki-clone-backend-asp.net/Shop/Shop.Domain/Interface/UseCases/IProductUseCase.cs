@@ -18,14 +18,14 @@ namespace Shop.Domain.Interface.UseCases
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        Task<ProductCreateResponse> AddNewProduct(ProductForm productForm);
+        Task<Guid> AddNewProduct(ProductForm productForm);
 
         /// <summary>
         /// lấy danh sách sản phẩm (đã được phân trang) theo danh mục
         /// </summary>
         /// <param name="categoryName">tên danh mục</param>
         /// <returns>danh sách sản phẩm theo danh mục</returns>
-        Task<PageResponse<ProductResponse>> PagingFilterProductByCategoryAsync(string categoryName, Dictionary<string, string> conditionFilter);
+        Task<PageResponse<ProductResponse>> PagingFilterProductByCategoryAsync(Dictionary<string, string> conditionFilter);
 
         /// <summary>
         /// lấy chi tiết sản phẩm theo id

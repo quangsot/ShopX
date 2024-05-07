@@ -14,6 +14,6 @@ namespace Shop.Application.Interface.ProductsService
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        Task<ProductDetailDTO> GetProductDetailByProductId(Guid productId);
+        Task<ProductDetailDTO> GetProductDetailByProductIdAsync(Guid productId);
     }
 }

@@ -2,6 +2,7 @@
 using Shop.Application.Interface;
 using Shop.Domain;
 using Shop.Domain.Enum;
+using Shop.Domain.Exceptions;
 using Shop.Domain.Interface.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Application.Services.Base
 {
-    public abstract class WriteService<TEntity, TEntityDTO, TEntityCreateDTO, TEntityUpdateDTO> : 
+    public abstract class WriteService<TEntity, TEntityDTO, TEntityCreateDTO, TEntityUpdateDTO> :
         ReadService<TEntity, TEntityDTO>,
         IWriteService<TEntityDTO, TEntityCreateDTO, TEntityUpdateDTO>
         where TEntity : class
@@ -22,7 +23,7 @@ namespace Shop.Application.Services.Base
     {
         protected readonly IWriteRepository<TEntity> _writeRepository;
 
-        public WriteService(IWriteRepository<TEntity> writeRepository, IMapper mapper) : base(writeRepository,mapper)
+        public WriteService(IWriteRepository<TEntity> writeRepository, IMapper mapper) : base(writeRepository, mapper)
         {
             _writeRepository = writeRepository;
         }
@@ -31,16 +32,22 @@ namespace Shop.Application.Services.Base
         /// chỉnh sửa dữ liệu trước khi thêm
         /// </summary>
         /// <param name="entityCreateDTO"></param>
-        protected abstract Task EditData(TEntity entity);
+        protected virtual Task EditData(TEntity entity)
+        {
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         /// kiểm tra logic nghiệp vụ
         /// </summary>
         /// <param name="entityCreateDTO"></param>
         /// <returns></returns>
-        protected abstract Task ValidateLogicBusiness(TEntity entity);
+        protected virtual Task ValidateLogicBusiness(TEntity entity)
+        {
+            return Task.CompletedTask;
+        }
 
-        public async Task<TEntityDTO> CreateAsync(TEntityCreateDTO entityCreateDTO, DbTransaction? dbContextTransaction = null)
+        public virtual async Task<TEntityDTO> CreateAsync(TEntityCreateDTO entityCreateDTO, DbTransaction? dbContextTransaction = null)
         {
             // map qua entity
             var entity = MapTEntityCreateDtoToTEntity(entityCreateDTO);
@@ -53,7 +60,7 @@ namespace Shop.Application.Services.Base
 
             // add vào DB
             var entityCreated = await _writeRepository.CreateAsync(entity, dbContextTransaction);
-            
+
             // map qua entityDTO
             var entityDTO = MapEntityToEntiyDTO(entityCreated);
 
@@ -63,23 +70,28 @@ namespace Shop.Application.Services.Base
         public async Task<List<TEntityDTO>> CreateManyAsync(List<TEntityCreateDTO> entities, DbTransaction? dbContextTransaction = null)
         {
             // thiếu validate
+            // chỉnh sửa dữ liệu trước khi thêm
             var entityList = MapListTEntityCreateDtoToListTEntity(entities);
+            foreach (var item in entityList)
+            {
+                await EditData(item);
+            }
             var entityCreatedList = await _writeRepository.CreateManyAsync(entityList, dbContextTransaction);
             var result = MapListEntityToListEntityDTO(entityCreatedList);
             return result;
         }
 
-        public async Task<TEntityDTO?> DeleteAsync(Guid id)
+        public virtual async Task<TEntityDTO?> DeleteAsync(Guid id)
         {
             var entityDTO = await GetByIdAsync(id);
-            if(entityDTO == null)
+            if (entityDTO == null)
             {
                 return default;
             }
             // map entityDTO sang entity
             var entity = MapTEntityDtoToTEntity(entityDTO);
             // xóa khỏi DB
-            var entityDeleted = _writeRepository.Delete(entity);
+            var entityDeleted = await _writeRepository.Delete(entity);
             // map entity sang entityDTO
             var entityDTODeleted = MapEntityToEntiyDTO(entityDeleted);
 
@@ -96,17 +108,18 @@ namespace Shop.Application.Services.Base
             return countEntitiesDeleted;
         }
 
-        public TEntityDTO Update(TEntityUpdateDTO entityUpdatedDTO)
+        public async Task<TEntityDTO> UpdateAsync(Guid id, TEntityUpdateDTO entityUpdatedDTO, DbTransaction? dbContextTransaction = null)
         {
-            // map entity update dto to entity
-            var entity = MapTEntityUpdateDtoToTEntity(entityUpdatedDTO);
-            // xóa khỏi DB
-            var entitiesDeleted = _writeRepository.Delete(entity);
-            // map entity qua entityDTO
-            var entityDtoDeleted = MapEntityToEntiyDTO(entitiesDeleted);
-
-            return entityDtoDeleted;
-
+            // kiểm tra entity tồn tại không
+            var entity = await _readRepository.GetByIdAsync(id);
+            if (entity != null)
+            {
+                //var entityUpdated = MapTEntityUpdateDtoToTEntity(entityUpdatedDTO);
+                var entityUpdated = _mapper.Map(entityUpdatedDTO, entity);
+                _ = await _writeRepository.UpdateAsync(entityUpdated, dbContextTransaction);
+                return MapEntityToEntiyDTO(entityUpdated);
+            }
+            else throw new BadRequestException(ErrorCode.InvalidInput, "Đối tượng cần cập nhật không tồn tại");
         }
 
         public int UpdateMany(List<TEntityUpdateDTO> entities)
@@ -114,7 +127,7 @@ namespace Shop.Application.Services.Base
             throw new NotImplementedException();
         }
 
-        public TEntity MapTEntityCreateDtoToTEntity (TEntityCreateDTO entityCreateDTO)
+        public TEntity MapTEntityCreateDtoToTEntity(TEntityCreateDTO entityCreateDTO)
         {
             var entity = _mapper.Map<TEntity>(entityCreateDTO);
             return entity;

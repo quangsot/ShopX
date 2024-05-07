@@ -5,9 +5,9 @@ namespace Shop.Domain.Entity;
 
 public partial class Paymenttype
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     public string? Name { get; set; }
 
-    public virtual ICollection<Userpaymentmethod> Userpaymentmethods { get; set; } = new List<Userpaymentmethod>();
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

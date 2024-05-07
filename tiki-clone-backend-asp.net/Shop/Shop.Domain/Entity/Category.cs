@@ -21,8 +21,6 @@ public partial class Category
 
     public sbyte? Status { get; set; }
 
-    public virtual ICollection<Categorydiscount> Categorydiscounts { get; set; } = new List<Categorydiscount>();
-
     public virtual ICollection<Filterproperty> Filterproperties { get; set; } = new List<Filterproperty>();
 
     public virtual ICollection<Category> InverseParent { get; set; } = new List<Category>();
